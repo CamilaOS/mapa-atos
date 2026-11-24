@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atos Guia — mapa</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eef0fb;background:#0b1226}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#1a1f4a,#0b1226 60%);min-height:100vh}
+main{max-width:760px;margin:auto;padding:24px 16px 40px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.logo{width:52px;height:52px;border-radius:16px;background:#f2c14e;color:#2a1f05;display:grid;place-items:center;font-size:27px;font-weight:800}
+h1{margin:0;font-size:25px}header p{margin:3px 0 0;color:#aab3d6;font-size:14px}
+.card{background:#161d3d;border:1px solid #2e3a6b;border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 12px 30px #0002}
+.label{color:#b9c1e3;font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.big{font-size:38px;font-weight:800;letter-spacing:-1px;margin:7px 0}
+.muted{color:#aab3d6;font-size:14px}
+.track{height:11px;border-radius:99px;background:#2a3463;overflow:hidden;margin:15px 0 8px}
+.fill{height:100%;width:0;background:#f2c14e;border-radius:99px;transition:width .2s}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+button{font:inherit;border-radius:12px;border:0;padding:12px 15px;background:#f2c14e;color:#2a1f05;font-weight:750;cursor:pointer}
+button.secondary{background:#26305e;color:#eef0fb;border:1px solid #44528f}
+button:active{transform:scale(.98)}
+.quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.quick button{padding:9px 12px;font-size:14px}
+.quick button.on{background:var(--c);color:#1a1405;border-color:var(--c)}
+.mapwrap{margin-top:14px;border-radius:16px;overflow:hidden;border:1px solid #2e3a6b}
+svg{display:block}
+.city{cursor:pointer}
+#info{margin-top:12px;background:#0f1530;border:1px solid #2e3a6b;border-radius:14px;padding:13px 14px;min-height:92px}
+#it{font-weight:750;font-size:17px}#tx{color:#d3d8f0;font-size:14px;margin-top:6px}.ps{display:grid;gap:9px}.p{display:flex;gap:10px;align-items:flex-start}.ref{flex:none;background:#f2c14e;color:#2a1f05;font-weight:750;font-size:12px;padding:3px 9px;border-radius:99px;white-space:nowrap;margin-top:1px}.pt{color:#d3d8f0;font-size:14px}#st{color:#8c96c4;font-size:12px;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+.ch{padding:10px 0;border-radius:12px;background:#0f1530;border:1px solid #2e3a6b;color:#eef0fb;font-weight:700;text-align:center}
+.ch.on{background:#f2c14e;color:#2a1f05;border-color:#f2c14e}
+.ch.today{outline:2px solid #6cb4ff;outline-offset:1px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}
+.stat{background:#0f1530;border-radius:15px;padding:15px}.stat b{font-size:22px;display:block;margin-top:5px}
+footer{text-align:center;color:#8c96c4;font-size:12px;margin-top:22px}
+@media(min-width:600px){main{padding-top:34px}.card{padding:24px}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo">A</div><div><h1>Atos Guia</h1><p>Toque nas cidades para ver as passagens de Atos.</p></div></header>
+
+<section class="card">
+<div class="label">Mapa interativo</div>
+<div class="quick" id="bt"></div>
+<div class="mapwrap">
+<svg id="map" width="100%" viewBox="0 0 380 440" role="img" aria-label="Mapa do Mediterrâneo com as rotas de Paulo">
+<rect width="380" height="440" fill="#0a1330"/>
+<g fill="#27346e" stroke="#4a5a9a" stroke-width="0.8" stroke-linejoin="round">
+<polygon points="128,0 380,0 380,203 335,203 316,207 308,207 284,217 266,204 248,200 226,190 224,170 212,139 208,105 208,77 206,54 195,56 185,66 176,78 180,110 182,150 188,156 176,173 170,207 159,190 153,139 135,88"/>
+<polygon points="20,0 68,0 92,26 122,81 104,95 98,130 92,156 86,130 87,88 68,61 50,24 34,0"/>
+<polygon points="335,203 380,203 380,384 311,384 314,367 322,326 330,275 332,231"/>
+<polygon points="0,170 20,190 26,222 32,258 20,292 44,332 80,347 100,372 116,400 140,370 152,330 176,343 200,372 224,390 259,387 272,380 300,383 311,384 380,384 380,440 0,440"/>
+<ellipse cx="68" cy="170" rx="18" ry="10"/><ellipse cx="198" cy="250" rx="20" ry="4"/><ellipse cx="306" cy="250" rx="12" ry="6"/>
+</g>
+<polygon points="240,0 380,0 380,48 330,38 280,40 250,46" fill="#0a1330" stroke="#4a5a9a" stroke-width="0.8"/>
+<text x="150" y="288" font-size="12" font-style="italic" fill="#5a6fa8" text-anchor="middle">Mar Mediterrâneo</text>
+<g id="routes" fill="none" stroke-linecap="round" stroke-linejoin="round"></g>
+<circle id="ring" r="10" fill="none" stroke="#fff" stroke-width="1.5" opacity="0"/>
+<g id="cities"></g>
+<circle id="trav" r="5" fill="#1a1405" stroke="#fff" stroke-width="2.5" opacity="0"/>
+</svg>
+</div>
+<div id="info"><div id="it">Escolha uma viagem</div><div id="tx">Toque em um botão para ver Paulo percorrer a rota, ou toque numa cidade.</div><div id="st"></div></div>
+</section>
+
+<footer>Atos Guia • Mapa esquemático: posições aproximadas.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const C={
+jer:[322,367,'Jerusalém',[["At 1:4-5", "Jesus manda os discípulos esperarem em Jerusalém a promessa do Espírito."], ["At 2:1-4", "No Pentecostes, o Espírito vem sobre eles e começam a falar em outras línguas."], ["At 2:41", "Cerca de três mil pessoas são batizadas naquele dia."], ["At 7:54-60", "Estêvão é apedrejado e se torna o primeiro mártir."]],-9,4,'end',1],
+dam:[336,309,'Damasco',[["At 9:3-6", "Uma luz do céu cerca Saulo e Jesus pergunta por que ele o persegue."], ["At 9:17-18", "Ananias ora por Saulo, que recupera a vista e é batizado."], ["At 9:20", "Logo começa a pregar nas sinagogas que Jesus é o Filho de Deus."]],-9,4,'end'],
+ces:[319,343,'Cesareia',[["At 10:44-48", "O Espírito desce sobre Cornélio e sua casa, e todos são batizados."], ["At 24:24-25", "Paulo fala a Félix sobre justiça, domínio próprio e juízo."], ["At 25:11-12", "Paulo apela para César."]],-9,4,'end'],
+ant:[335,218,'Antioquia',[["At 11:19-21", "Os dispersos pela perseguição pregam em Antioquia e muitos creem."], ["At 11:26", "Os discípulos são chamados cristãos pela primeira vez."], ["At 13:1-3", "A igreja ora e jejua, e o Espírito separa Barnabé e Saulo para a obra."]],-9,-5,'end',1],
+tar:[319,193,'Tarso',[["At 9:30", "Os irmãos levam Saulo até Tarso, em segurança."], ["At 11:25-26", "Barnabé vai a Tarso buscar Saulo e o leva para Antioquia."], ["At 21:39", "Paulo se apresenta como cidadão de Tarso."]],-9,4,'end'],
+chi:[308,251,'Chipre',[["At 13:4-5", "Barnabé e Saulo chegam a Salamina e pregam nas sinagogas."], ["At 13:6-11", "Em Pafos, o mágico Elimas se opõe e fica cego por um tempo."], ["At 13:12", "O procônsul Sérgio Paulo crê, admirado com o ensino."]],-9,16,'end'],
+pis:[275,145,'Pisídia',[["At 13:14-16", "Em Antioquia da Pisídia, Paulo recebe a palavra na sinagoga."], ["At 13:38-39", "Anuncia o perdão dos pecados e a justificação por Jesus."], ["At 13:46-48", "Diante da oposição, voltam-se aos gentios, que se alegram."]],0,-11,'middle'],
+ico:[290,159,'Icônio',[["At 14:1", "Pregam na sinagoga e grande número de judeus e gregos crê."], ["At 14:2-5", "Surge oposição e há plano de apedrejá-los; eles fogem."]],-8,17,'end'],
+tro:[211,94,'Trôade',[["At 16:8-10", "Em visão, Paulo vê um macedônio pedindo ajuda; decidem ir à Macedônia."], ["At 20:7-12", "Paulo prega até tarde; Êutico cai da janela e é restaurado."]],9,4,'start'],
+fil:[191,54,'Filipos',[["At 16:13-15", "Lídia ouve Paulo, crê e é batizada com sua casa."], ["At 16:25-26", "Paulo e Silas oram na prisão e um terremoto abre as portas."], ["At 16:30-34", "O carcereiro e toda a sua família creem e são batizados."]],9,4,'start'],
+cor:[180,158,'Atenas e Corinto',[["At 17:22-23", "Em Atenas, Paulo fala no Areópago sobre o altar ao deus desconhecido."], ["At 17:32-34", "Alguns zombam; outros creem, entre eles Dionísio."], ["At 18:1-4", "Em Corinto, Paulo conhece Áquila e Priscila e trabalha com eles."], ["At 18:11", "Fica ali um ano e seis meses ensinando a palavra."]],0,21,'middle'],
+efe:[224,159,'Éfeso',[["At 19:1-6", "Paulo encontra discípulos que recebem o Espírito Santo."], ["At 19:9-10", "Ensina na escola de Tirano por dois anos."], ["At 19:23-29", "Um tumulto dos ourives toma a cidade por causa de Diana."]],9,-8,'start'],
+mal:[72,227,'Malta',[["At 27:41-44", "O navio encalha, mas todos chegam salvos à terra."], ["At 28:1-2", "Os habitantes da ilha os recebem com bondade."], ["At 28:3-6", "Uma víbora morde Paulo, mas ele não sofre dano."], ["At 28:8-9", "Paulo cura o pai de Públio e outros doentes."]],10,4,'start'],
+rom:[50,23,'Roma',[["At 28:14-16", "Paulo chega a Roma, irmãos vêm ao seu encontro e ele mora com um soldado."], ["At 28:23-24", "Explica o reino de Deus do amanhecer ao entardecer."], ["At 28:30-31", "Por dois anos prega o reino, sem impedimento."]],12,4,'start',1]
+};
+const J=[
+{n:'Conversão',c:'#6cb4ff',r:['jer','dam','tar']},
+{n:'1ª viagem',c:'#5ee0b0',r:['ant','chi','pis','ico','ant']},
+{n:'2ª viagem',c:'#ff8a65',r:['ant','tar','ico','tro','fil','cor','efe','ces','ant']},
+{n:'3ª viagem',c:'#ff7eb6',r:['ant','efe','fil','cor','fil','tro','ces','jer']},
+{n:'Rumo a Roma',c:'#f2c14e',r:['ces','mal','rom']}
+];
+const NS='http://www.w3.org/2000/svg';
+const paths=[],cums=[];let cur=-1,raf=0;
+J.forEach((j,i)=>{
+const p=document.createElementNS(NS,'path');
+p.setAttribute('d','M'+j.r.map(k=>C[k][0]+' '+C[k][1]).join(' L'));
+p.setAttribute('stroke',j.c);p.setAttribute('stroke-width','2');p.setAttribute('opacity','0.25');
+$('routes').appendChild(p);paths.push(p);
+let c=[0],t=0;for(let k=1;k<j.r.length;k++){const a=C[j.r[k-1]],b=C[j.r[k]];t+=Math.hypot(a[0]-b[0],a[1]-b[1]);c.push(t)}
+cums.push(c);
+const b=document.createElement('button');b.className='secondary';b.style.setProperty('--c',j.c);b.textContent=j.n;b.onclick=()=>sel(i);
+$('bt').appendChild(b);j.b=b;
+});
+Object.keys(C).forEach(k=>{
+const d=C[k],g=document.createElementNS(NS,'g');g.setAttribute('class','city');
+g.innerHTML='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="13" fill="transparent"/><circle cx="'+d[0]+'" cy="'+d[1]+'" r="'+(d[7]?5.5:4)+'" fill="#0b1226" stroke="#eef0fb" stroke-width="1.5"/><text x="'+(d[0]+d[4])+'" y="'+(d[1]+d[5])+'" text-anchor="'+d[6]+'" font-size="11" '+(d[7]?'font-weight="700" ':'')+'fill="#eef0fb" stroke="#0b1226" stroke-width="3" paint-order="stroke">'+d[2]+'</text>';
+g.onclick=()=>{stop(true);show(k,'')};
+$('cities').appendChild(g);
+});
+function show(k,s){
+const d=C[k];$('it').textContent=d[2];$('st').textContent=s;
+const t=$('tx');t.className='ps';t.textContent='';
+d[3].forEach(p=>{const r=document.createElement('div');r.className='p';const a=document.createElement('span');a.className='ref';a.textContent=p[0];const b=document.createElement('span');b.className='pt';b.textContent=p[1];r.appendChild(a);r.appendChild(b);t.appendChild(r)});
+const r=$('ring');r.setAttribute('cx',d[0]);r.setAttribute('cy',d[1]);r.setAttribute('opacity','1');
+}
+function stop(finish){
+cancelAnimationFrame(raf);
+if(finish&&cur>=0){paths[cur].style.strokeDashoffset=0;$('trav').setAttribute('opacity','0')}
+}
+function sel(i){
+stop(false);cur=i;
+J.forEach((j,x)=>{j.b.className=x===i?'on':'secondary';paths[x].setAttribute('opacity',x===i?'1':'0.25');paths[x].setAttribute('stroke-width',x===i?'3':'2');paths[x].style.strokeDasharray='none';paths[x].style.strokeDashoffset=0});
+const p=paths[i],len=p.getTotalLength(),cum=cums[i],j=J[i];
+p.style.strokeDasharray=len;p.style.strokeDashoffset=len;
+const tv=$('trav');tv.setAttribute('stroke',j.c);tv.setAttribute('opacity','1');
+const dur=(j.r.length-1)*1100,t0=performance.now();let last=-1;
+function f(now){
+const t=Math.min(1,(now-t0)/dur),d=len*t;
+p.style.strokeDashoffset=len-d;
+const pt=p.getPointAtLength(d);tv.setAttribute('cx',pt.x);tv.setAttribute('cy',pt.y);
+let k=0;for(let x=0;x<cum.length;x++){if(cum[x]<=d+0.5)k=x}
+if(k!==last){last=k;show(j.r[k],j.n+' · parada '+(k+1)+' de '+j.r.length)}
+if(t<1)raf=requestAnimationFrame(f);else tv.setAttribute('opacity','0');
+}
+raf=requestAnimationFrame(f);
+}
+
+sel(2);
+</script>
+</body>
+</html>
